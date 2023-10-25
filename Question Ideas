@@ -1,0 +1,58 @@
+
+
+
+Comment évolue la répartition des tirs réussis en fonction du temps restant, en distinguant les tirs à 3 points (3-points) et les tirs à 2 points (2-points) pour chaque quart-temps (quarter) ?
+Graphique : Graphique en ligne avec deux courbes (3-points et 2-points) par quart-temps
+Variables associées : time_remaining, made, shot_type, quarter
+
+Quelle est la relation entre la position des tirs sur le terrain (shotX et shotY) et le taux de réussite (made), en tenant compte du temps restant et du type de tir (3-points ou 2-points) ?
+Graphique : Carte de chaleur (heatmap) avec filtres interactifs pour le temps restant et le type de tir
+Variables associées : shotX, shotY, made, time_remaining, shot_type
+
+Comment évolue la distribution des tirs réussis par joueur (player) en fonction du temps de jeu, en prenant en compte le quart-temps et le type de tir (3-points ou 2-points) ?
+Graphique : Graphique en barres empilées par joueur avec filtres pour le quart-temps et le type de tir
+Variables associées : player, made, time_remaining, quarter, shot_type
+
+Quelle est la corrélation entre la position des tirs sur le terrain (shotX et shotY) et le nombre de tirs réussis par quart-temps, en différenciant les équipes (team) ?
+Graphique : Carte de chaleur (heatmap) avec des zones colorées pour chaque équipe et des courbes de corrélation
+Variables associées : shotX, shotY, made, quarter, team
+
+Comment évolue la répartition des tirs réussis en fonction du temps restant, en différenciant les joueurs (player) par des codes de couleur, et en montrant les tirs à 3 points et 2 points ?
+Graphique : Diagramme à densité avec échelle de couleurs pour les joueurs, divisé en 3-points et 2-points
+Variables associées : time_remaining, made, player, shot_type
+
+Quelle est la tendance des tirs réussis en fonction du temps restant, en prenant en compte le nombre total de rebonds (rebounds) réalisés après chaque tir ?
+Graphique : Graphique en ligne avec une courbe pour les tirs réussis et une courbe pour les rebonds en fonction du temps restant
+Variables associées : time_remaining, made, rebounds
+
+Comment évolue la distribution des tirs réussis en fonction du temps restant et de la fatigue des joueurs (peut être mesurée par le nombre de matchs précédents joués par chaque joueur) ?
+Graphique : Diagramme à barres empilées avec le temps restant en abscisse et le nombre de matchs précédents joués en échelle de couleurs
+Variables associées : time_remaining, made, player, match_id
+
+Quelle est la relation entre la position des tirs sur le terrain (shotX et shotY), la période du match (1st ou 2nd), et le taux de réussite (made) ?
+Graphique : Carte de chaleur (heatmap) avec des filtres pour la période du match et des courbes de corrélation
+Variables associées : shotX, shotY, made, quarter
+
+Comment évolue la répartition des tirs réussis en fonction du temps restant, en tenant compte de la position des tirs sur le terrain (shotX et shotY) et en différenciant les équipes (team) ?
+Graphique : Carte de chaleur (heatmap) avec des filtres interactifs pour le temps restant, les coordonnées de tir et les équipes
+Variables associées : time_remaining, made, shotX, shotY, team
+
+Quelle est la tendance des tirs réussis en fonction du temps restant, en prenant en compte l'écart de score entre les équipes (différence de points) ?
+Graphique : Graphique en ligne avec une courbe pour les tirs réussis en fonction du temps restant, colorée en fonction de l'écart de score
+Variables associées : time_remaining, made, score_difference
+
+Comment évolue la distribution des tirs réussis en fonction du temps restant, en différenciant les matchs joués à domicile et à l'extérieur (home/away) ?
+Graphique : Diagramme à barres groupées avec le temps restant en abscisse, les matchs à domicile et à l'extérieur en couleurs
+Variables associées : time_remaining, made, home/away
+
+Quelle est la relation entre le taux de réussite (made) et le temps restant, en distinguant les joueurs qui ont déjà réalisé un double-double (double digit en points et rebonds) dans le match ?
+Graphique : Graphique en ligne avec des courbes séparées pour les joueurs avec et sans double-double, en fonction du temps restant
+Variables associées : time_remaining, made, player, double-double
+
+Comment évolue la répartition des tirs réussis en fonction du temps restant, en tenant compte de la position des tirs sur le terrain (shotX et shotY), et en montrant les évolutions entre les quarts-temps ?
+Graphique : Carte de chaleur (heatmap) avec une animation pour chaque quart-temps montrant l'évolution au fil du temps
+Variables associées : time_remaining, made, shotX, shotY, quarter
+
+Quelle est la relation entre le taux de réussite (made) et la position des tirs sur le terrain (shotX et shotY), en prenant en compte les caractéristiques individuelles des joueurs telles que leur taille et leur nombre de matchs joués cette saison ?
+Graphique : Diagramme en nuage de points (scatter plot) avec une dimension de taille de point pour la caractéristique individuelle du joueur
+Variables associées : shotX, shotY, made, player, taille, matchs_joués
