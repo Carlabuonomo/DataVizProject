@@ -4,7 +4,7 @@
 > How does the distribution of successful shots evolve as a function of time remaining, distinguishing between 3-point shots and 2-point shots for each quarter?
 
 **Graph**
-Online graph with two curves (3-points and 2-points) per quarter
+Line graph with two curves (3-points and 2-points) per quarter
 
 **Associated variables**
 time_remaining, made, shot_type, quarter
@@ -49,7 +49,7 @@ time_remaining, made, player, shot_type
 > What is the trend in successful shots as a function of time remaining, taking into account the total number of rebounds after each shot?
 
 **Graph**
-Online graph with a curve for successful shots and a curve for rebounds as a function of time remaining.
+Line graph with a curve for successful shots and a curve for rebounds as a function of time remaining.
 **Associated variables**
 time_remaining, made, rebounds
 
@@ -81,7 +81,7 @@ time_remaining, made, shotX, shotY, team
 > What is the trend in successful shots as a function of time remaining, taking into account the score difference between teams (point difference)?
 
 **Graph**
-Online graph with a curve for successful shots as a function of time remaining, colored according to the score difference.
+Line graph with a curve for successful shots as a function of time remaining, colored according to the score difference.
 **Associated variables**
 time_remaining, made, score_difference
 
@@ -97,7 +97,7 @@ time_remaining, made, home/away
 > What is the relationship between success rate (made) and time remaining, distinguishing between players who have already achieved a double-double (double digit in points and rebounds) in the game?
 
 **Graph**
-Online graph with separate curves for players with and without a double-double, as a function of time remaining.
+Line graph with separate curves for players with and without a double-double, as a function of time remaining.
 **Associated variables**
 time_remaining, made, player, double-double
 
