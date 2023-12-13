@@ -50,6 +50,7 @@ time_remaining, made, player, shot_type
 
 **Graph**
 Line graph with a curve for successful shots and a curve for rebounds as a function of time remaining.
+
 **Associated variables**
 time_remaining, made, rebounds
 
@@ -58,6 +59,7 @@ time_remaining, made, rebounds
 
 **Graph**
 Stacked bar chart with time remaining on the abscissa and number of previous matches played on the color scale.
+
 **Associated variables**
 time_remaining, made, player, match_id
 
@@ -66,6 +68,7 @@ time_remaining, made, player, match_id
 
 **Graph**
 Heatmap with filters for match period and correlation curves
+
 **Associated variables**
 shotX, shotY, made, quarter
 
@@ -74,6 +77,7 @@ shotX, shotY, made, quarter
 
 **Graph**
 Heatmap with interactive filters for time remaining, shot coordinates and teams
+
 **Associated variables**
 time_remaining, made, shotX, shotY, team
 
@@ -82,6 +86,7 @@ time_remaining, made, shotX, shotY, team
 
 **Graph**
 Line graph with a curve for successful shots as a function of time remaining, colored according to the score difference.
+
 **Associated variables**
 time_remaining, made, score_difference
 
@@ -90,6 +95,7 @@ time_remaining, made, score_difference
 
 **Graph**
 Grouped bar chart with time remaining on the x-axis, home and away matches in color
+
 **Associated variables**
 time_remaining, made, home/away
 
@@ -98,6 +104,7 @@ time_remaining, made, home/away
 
 **Graph**
 Line graph with separate curves for players with and without a double-double, as a function of time remaining.
+
 **Associated variables**
 time_remaining, made, player, double-double
 
@@ -106,6 +113,7 @@ time_remaining, made, player, double-double
 
 **Graph**
 Heatmap with animation for each quarter showing evolution over time
+
 **Associated variables**
 time_remaining, made, shotX, shotY, quarter
 
@@ -114,5 +122,6 @@ time_remaining, made, shotX, shotY, quarter
 
 **Graph**
 Scatter plot with one point size dimension for individual player characteristics
+
 **Associated variables**
 shotX, shotY, made, player, size, matches_played
