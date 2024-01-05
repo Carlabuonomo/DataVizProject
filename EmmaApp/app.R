@@ -2,7 +2,7 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 
-data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/dataTest.csv")
+data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
 
 # Define UI ----
 ui <- fluidPage(
