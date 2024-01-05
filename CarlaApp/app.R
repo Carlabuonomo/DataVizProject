@@ -8,19 +8,19 @@ library(dplyr)
 #Do specific players exhibit a significant change in the proportion of shot types when transitioning from one team to another, and are there any noticeable patterns or anomalies in these transitions?
 #Are there noticeable variations in the shot type preferences of individual players across different quarters, and do these variations suggest any strategic changes or player tendencies during specific periods of a game?
 
-data <- read.csv("/Users/carlabuonomo/Desktop/DataViz/App/data/merge.csv", sep = ",")
+# data <- read.csv("data/merge.csv", sep = ",")
 
 # Is he type of shots proportion per player differ when he is on a different team ? What is the general proportion of the type of shots per player ?
 #It will be cool to have the info of what team are available to choose from for a player
 # UI
-ui <- fluidPage(
+carlaUi <- fluidPage(
   titlePanel("Proportion of Shot Types per Player"),
   sidebarLayout(
     sidebarPanel(
-      selectInput("selectedPlayer", "Choose a player", choices = unique(data$player)),
-      checkboxGroupInput("selectedQuarters", "Choose a time", choices = unique(data$quarter),selected="1st quarter"),
-      checkboxGroupInput("Shots", "Shots made", choices = unique(data$made), selected="True"),
-      checkboxGroupInput("selectedTeam", "Choose a team", choices = unique(data$team)),
+      selectInput("selectedPlayer", "Choose a player", choices = c(unique(data$player))),
+      checkboxGroupInput("selectedQuarters", "Choose a time", choices = c(unique(data$quarter)),selected="1st quarter"),
+      checkboxGroupInput("Shots", "Shots made", choices = c(unique(data$made)), selected="True"),
+      checkboxGroupInput("selectedTeam", "Choose a team", choices = c(unique(data$team))),
     ),
     mainPanel(
       plotOutput("shotTypePlot")
@@ -29,7 +29,7 @@ ui <- fluidPage(
 )
 
 # Serveur
-server <- function(input, output) {
+carlaServer <- function(input, output) {
   filteredData <- reactive({
     data %>%
       filter(player == input$selectedPlayer, quarter %in% input$selectedQuarters, made %in% input$Shots, team %in% input$selectedTeam) #,  , # team %in% input$selectedTeam
@@ -43,6 +43,3 @@ server <- function(input, output) {
       theme_minimal()
   })
 }
-
-# Lancer l'application
-shinyApp(ui = ui, server = server)

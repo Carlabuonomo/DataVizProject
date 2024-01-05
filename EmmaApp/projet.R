@@ -1,9 +1,7 @@
 # Pour virgule comme séparateur
 #install.packages("hms")
 #install.packages("chron")
-dataTest <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba.csv")
-
-dataTest <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
+dataTest <- read.csv("data/merge.csv")
 View(data)
 
 library(dplyr)
@@ -44,7 +42,7 @@ dataTest <- dataTest %>%
 
 
 
-write.csv(dataTest, "/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv", row.names = FALSE)
+write.csv(dataTest, "data/nba.csv", row.names = TRUE)
 
 
 

@@ -2,34 +2,30 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 
-data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
+# data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
 
 # Define UI ----
-ui <- fluidPage(
-  titlePanel("NBA Application"),
-  
-  sidebarLayout(
-    sidebarPanel(
-      helpText("Let's take a look at the team scores for each match"),
-      
-      dateInput("selectedDate", "Select a Date",
-                value = min(data$date),
-                min = min(data$date),
-                max = max(data$date)),
-      
-      selectInput("match_id", "Match",
-                  choices = NULL)
-    ),
-    
-    mainPanel(
-      textOutput("team_names"),
-      plotOutput("points_plot")
-    )
-  )
-)
+emmaUi <- sidebarLayout(
+            sidebarPanel(
+              helpText("Let's take a look at the team scores for each match"),
+              
+              dateInput("selectedDate", "Select a Date",
+                        value = min(data$date),
+                        min = min(data$date),
+                        max = max(data$date)),
+              
+              selectInput("match_id", "Match",
+                          choices = NULL)
+            ),
+            
+            mainPanel(
+              textOutput("team_names"),
+              plotOutput("points_plot")
+            )
+          )
 
 # Define server logic ----
-server <- function(input, output, session) {
+emmaServer <- function(input, output, session) {
   
   # Filtrer les match_id en fonction de la date sélectionnée
   observe({
@@ -78,4 +74,4 @@ server <- function(input, output, session) {
 }
 
 # Run the app ----
-shinyApp(ui = ui, server = server)
+# shinyApp(ui = ui, server = server)

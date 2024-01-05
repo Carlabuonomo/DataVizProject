@@ -1,8 +1,6 @@
 library(data.table)
-
-data <- fread("data/merge.csv")
-
-function(input, output, session) {
+data <- fread("data/nba.csv")
+marwinServer = function(input, output) {
 
   court_plot = reactive({
     plot_court()
