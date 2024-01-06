@@ -23,7 +23,11 @@ dataTest <- dataTest %>%
       quarter == "1st quarter" ~ as.POSIXct("00:00.0", format = "%M:%S"),
       quarter == "2nd quarter" ~ as.POSIXct("12:00.0", format = "%M:%S"),
       quarter == "3rd quarter" ~ as.POSIXct("24:00.0", format = "%M:%S"),
-      quarter == "4th quarter" ~ as.POSIXct("36:00.0", format = "%M:%S")
+      quarter == "4th quarter" ~ as.POSIXct("36:00.0", format = "%M:%S"),
+      quarter == "1st overtime" ~ as.POSIXct("41:00.0", format = "%M:%S"),
+      quarter == "2nd overtime" ~ as.POSIXct("47:00.0", format = "%M:%S"),
+      quarter == "3rd overtime" ~ as.POSIXct("52:00.0", format = "%M:%S"),
+      quarter == "4th overtime" ~ as.POSIXct("57:00.0", format = "%M:%S")
     ),
     time_game = x + (as.POSIXct("12:00.0", format = "%M:%S") - time_remaining),
     time_game = format(time_game, "%H:%M:%S"),  # Nouvelle colonne pour l'affichage
