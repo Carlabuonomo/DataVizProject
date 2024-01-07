@@ -5,39 +5,49 @@ library(ggplot2)
 # data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
 
 # Define UI ----
-emmaUi <- sidebarLayout(
-            sidebarPanel(
-              helpText("Let's take a look at the team scores for each match"),
-              
-              dateInput("selectedDate", "Select a Date",
-                        value = min(data$date),
-                        min = min(data$date),
-                        max = max(data$date)),
-              
-              selectInput("match_id", "Match",
-                          choices = NULL)
-            ),
-            
-            mainPanel(
-              textOutput("team_names"),
-              plotOutput("points_plot")
-            )
-          )
+ui <- fluidPage(
+  titlePanel("NBA Application"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      helpText("Let's take a look at the team scores for each match"),
+      
+      dateInput("selectedDate", "Select a Date",
+                value = min(data$date),
+                min = min(data$date),
+                max = max(data$date)),
+      
+      selectInput("match_id", "Match",
+                  choices = NULL),
+      
+      radioButtons("plotType", "Select Plot Type:",
+                   choices = c("Line Chart", "Bar Chart"),
+                   selected = "Line Chart")
+    ),
+    
+    mainPanel(
+      textOutput("team_names"),
+      plotOutput("selected_plot")
+    )
+  )
+)
 
 # Define server logic ----
-emmaServer <- function(input, output, session) {
+server <- function(input, output, session) {
+  # Reactive values to store filtered data
+  reactive_values <- reactiveValues(selectedMatchData = NULL)
   
-  # Filtrer les match_id en fonction de la date sélectionnée
+  # Filter match_id based on the selected date
   observe({
     dateFilteredData <- data %>%
       filter(date == input$selectedDate)
     
-    # Mettre à jour les choix du selectInput
+    # Update choices for selectInput
     updateSelectInput(session, "match_id",
                       choices = unique(dateFilteredData$match_id))
   })
   
-  # Observer pour réagir aux changements dans le sélecteur de match_id
+  # Observer to react to changes in the match_id selector
   observe({
     selectedMatchData <- data %>%
       filter(match_id == input$match_id) %>%
@@ -54,23 +64,52 @@ emmaServer <- function(input, output, session) {
     })
   })
   
+  # Observer to store filtered data in reactiveValues
   observe({
-    selectedMatchData <- data %>%
+    reactive_values$selectedMatchData <- data %>%
       filter(match_id == input$match_id)
-    
-    # Convertir la colonne time_game en POSIXct
+  })
+  
+  # Observer to create either a line chart or a bar chart based on user choice
+  observe({
+    selectedMatchData <- reactive_values$selectedMatchData
     selectedMatchData$time_game <- as.POSIXct(selectedMatchData$time_game, format = "%H:%M:%S")
     
-    output$points_plot <- renderPlot({
-      ggplot(selectedMatchData, aes(x = time_game, y = teamPoints, color = team, group = team)) +
-        geom_line() +
-        labs(title = "Evolution of points for both teams in the match",
-             x = "Game time",
-             y = "Number of points") +
-        scale_x_datetime(labels = scales::date_format("%M:%S")) +  # Formater la légende du temps
-        theme_minimal()
-    })
+    if (input$plotType == "Line Chart") {
+      output$selected_plot <- renderPlot({
+        ggplot(selectedMatchData, aes(x = time_game, y = teamPoints, color = team, group = team)) +
+          geom_line() +
+          labs(title = "Evolution of points for both teams in the match",
+               x = "Game time",
+               y = "Number of points") +
+          scale_x_datetime(labels = scales::date_format("%M:%S")) +
+          theme_minimal()
+      })
+    } else if (input$plotType == "Bar Chart") {
+      output$selected_plot <- renderPlot({
+        selectedMatchData <- selectedMatchData %>%
+          mutate(time_group = case_when(
+            time_game < as.POSIXct("00:12:00", format = "%H:%M:%S") ~ "Q1",
+            time_game >= as.POSIXct("00:12:00", format = "%H:%M:%S") & time_game < as.POSIXct("00:24:00", format = "%H:%M:%S") ~ "Q2",
+            time_game >= as.POSIXct("00:24:00", format = "%H:%M:%S") & time_game < as.POSIXct("00:36:00", format = "%H:%M:%S") ~ "Q3",
+            time_game >= as.POSIXct("00:36:00", format = "%H:%M:%S") ~ "Q4"
+          ))
+        time_group_order <- c("Q1", "Q2", "Q3", "Q4")
+        selectedMatchData$time_group <- factor(selectedMatchData$time_group, levels = time_group_order)
+        head(selectedMatchData$teamPoints)
+        selectedMatchData$teamPoints <- selectedMatchData$teamPoints 
+        head(selectedMatchData$teamPoints)
+        
+        ggplot(selectedMatchData, aes(x = time_group, y = teamPoints , fill = team)) +
+          geom_bar(stat = "identity", position = "dodge") +
+          labs(title = "Score Evolution Over Time",
+               x = "Time Group",
+               y = "Number of points") +
+          theme_minimal()
+      })
+    }
   })
+  
 }
 
 # Run the app ----
