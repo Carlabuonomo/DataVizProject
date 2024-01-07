@@ -5,7 +5,7 @@ library(ggplot2)
 # data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
 
 # Define UI ----
-ui <- fluidPage(
+emmaUi <- fluidPage(
   titlePanel("NBA Application"),
   
   sidebarLayout(
@@ -33,7 +33,7 @@ ui <- fluidPage(
 )
 
 # Define server logic ----
-server <- function(input, output, session) {
+emmaServer <- function(input, output, session) {
   # Reactive values to store filtered data
   reactive_values <- reactiveValues(selectedMatchData = NULL)
   
