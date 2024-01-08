@@ -8,7 +8,7 @@ library(dplyr)
 #Do specific players exhibit a significant change in the proportion of shot types when transitioning from one team to another, and are there any noticeable patterns or anomalies in these transitions?
 #Are there noticeable variations in the shot type preferences of individual players across different quarters, and do these variations suggest any strategic changes or player tendencies during specific periods of a game?
 
-data <- fread("data/nba.csv", sep = ",")
+# data <- fread("data/nba.csv", sep = ",")
 
 # Is he type of shots proportion per player differ when he is on a different team ? What is the general proportion of the type of shots per player ?
 #It will be cool to have the info of what team are available to choose from for a player

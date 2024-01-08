@@ -1,6 +1,6 @@
 library(data.table)
-data <- fread("data/nba.csv")
-marwinServer = function(input, output) {
+data <- fread("data/nba_full.csv")
+marwinServer = function(input, output, session) {
 
   court_plot = reactive({
     plot_court()
@@ -93,12 +93,18 @@ marwinServer = function(input, output) {
     tagList(
       selectizeInput(inputId = "selected_match",
                      label = "Match",
-                     choices = unique(data$match_id)),
+                     choices = c(unique(data$match))),
       selectInput(inputId = "selected_quarter",
                   label = "Quarter",
-                  choices = c("All", "1"="1st quarter", "2"="2nd quarter", "3"="3rd quarter", "4"="4th quarter"),
+                  choices = NULL,
                   selected = "All"),
     )
+  })
+  
+  observe({input$selected_match
+    updateSelectizeInput(session = session,
+                         inputId = "selected_quarter",
+                         choices = unique(data[match_id %in% input$selected_match]$quarter))
   })
   
   output$team_filter = renderUI({
@@ -109,13 +115,17 @@ marwinServer = function(input, output) {
                      choices = c(unique(data$team))),
       
       dateRangeInput(inputId = "team_date_range",
-                     label = "Date range",
-                     start = "2000-10-31",
-                     end = "2000-10-31",
-                     min = "2000-10-31",
-                     max = "2022-03-21"),
-      
-    )
+                     label = "Date range")
+  )})
+  
+  observe({input$team_name
+    updateDateRangeInput(session = session,
+                         inputId = "team_date_range",
+                         start = min(data$date),
+                         end = min(data[team %in% input$team_name]$date),
+                         min = min(data[team %in% input$team_name]$date),
+                         max = max(data[team %in% input$team_name]$date))
+                         
   })
   
   output$player_filter = renderUI({
@@ -123,15 +133,21 @@ marwinServer = function(input, output) {
     tagList(
       selectizeInput(inputId = "player_name",
                      label = "Player",
-                     choices = c(unique(data$player))),
+                     choices = c(unique(data$player)),
+                     selected = "Please Select Player"),
       
       dateRangeInput(inputId = "player_date_range",
-                     label = "Date range",
-                     start = "2000-10-31",
-                     end = "2000-10-31",
-                     min = "2000-10-31",
-                     max = "2022-03-21"),
-    )
+                     label = "Date range")
+  )})
+  
+  observe({input$player_name
+    updateDateRangeInput(session = session,
+                         inputId = "player_date_range",
+                         start = min(data[player %in% input$player_name]$date),
+                         end = min(data[player %in% input$player_name]$date),
+                         min = min(data[player %in% input$player_name]$date),
+                         max = max(data[player %in% input$player_name]$date))
+    
   })
 
   output$court = renderPlot({
