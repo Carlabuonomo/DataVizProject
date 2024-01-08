@@ -17,7 +17,7 @@ emmaUi <- fluidPage(
                 min = min(data$date),
                 max = max(data$date)),
       
-      selectInput("match_id", "Match",
+      selectInput("match_id", "Select a Match",
                   choices = NULL),
       
       radioButtons("plotType", "Select Plot Type:",
