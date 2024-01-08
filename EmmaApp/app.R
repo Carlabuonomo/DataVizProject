@@ -5,7 +5,7 @@ library(ggplot2)
 # data <- read.csv("/Users/macbook/Desktop/etsiinf/dataViz/projet/nba2.csv")
 
 # Define UI ----
-emmaUi <- fluidPage(
+ui <- fluidPage(
   titlePanel("NBA Application"),
   
   sidebarLayout(
@@ -20,10 +20,17 @@ emmaUi <- fluidPage(
       selectInput("match_id", "Select a Match",
                   choices = NULL),
       
-      radioButtons("plotType", "Select Plot Type:",
+      selectInput("selectedQuarter", "Select Quarter (only for Line Chart)",
+                  choices = c("1st quarter", "2nd quarter", "3rd quarter", "4th quarter"),
+                  multiple = TRUE, selected = c("1st quarter", "2nd quarter", "3rd quarter", "4th quarter")),
+      
+    
+      radioButtons("plotType", "Select Plot Type ",
                    choices = c("Line Chart", "Bar Chart"),
                    selected = "Line Chart")
-    ),
+      ),
+      
+  
     
     mainPanel(
       textOutput("team_names"),
@@ -33,7 +40,7 @@ emmaUi <- fluidPage(
 )
 
 # Define server logic ----
-emmaServer <- function(input, output, session) {
+server <- function(input, output, session) {
   # Reactive values to store filtered data
   reactive_values <- reactiveValues(selectedMatchData = NULL)
   
@@ -76,6 +83,10 @@ emmaServer <- function(input, output, session) {
     selectedMatchData$time_game <- as.POSIXct(selectedMatchData$time_game, format = "%H:%M:%S")
     
     if (input$plotType == "Line Chart") {
+      # Filter data based on selected quarters for Line Chart only
+      selectedMatchData <- selectedMatchData %>%
+        filter(quarter %in% input$selectedQuarter)
+      
       output$selected_plot <- renderPlot({
         ggplot(selectedMatchData, aes(x = time_game, y = teamPoints, color = team, group = team)) +
           geom_line() +
@@ -86,19 +97,21 @@ emmaServer <- function(input, output, session) {
           theme_minimal()
       })
     } else if (input$plotType == "Bar Chart") {
+      # No need to filter for Bar Chart
       output$selected_plot <- renderPlot({
         selectedMatchData <- selectedMatchData %>%
           mutate(time_group = case_when(
-            time_game < as.POSIXct("00:12:00", format = "%H:%M:%S") ~ "Q1",
-            time_game >= as.POSIXct("00:12:00", format = "%H:%M:%S") & time_game < as.POSIXct("00:24:00", format = "%H:%M:%S") ~ "Q2",
-            time_game >= as.POSIXct("00:24:00", format = "%H:%M:%S") & time_game < as.POSIXct("00:36:00", format = "%H:%M:%S") ~ "Q3",
-            time_game >= as.POSIXct("00:36:00", format = "%H:%M:%S") ~ "Q4"
+            time_game < as.POSIXct("00:12:00", format = "%H:%M:%S") ~ "1st quarter",
+            time_game >= as.POSIXct("00:12:00", format = "%H:%M:%S") & time_game < as.POSIXct("00:23:59", format = "%H:%M:%S") ~ "2nd quarter",
+            time_game >= as.POSIXct("00:24:00", format = "%H:%M:%S") & time_game < as.POSIXct("00:35:59", format = "%H:%M:%S") ~ "3rd quarter",
+            time_game >= as.POSIXct("00:36:00", format = "%H:%M:%S") ~ "4th quarter"
           ))
-        time_group_order <- c("Q1", "Q2", "Q3", "Q4")
+        
+        # Define the desired order of levels for time_group
+        time_group_order <- c("1st quarter", "2nd quarter", "3rd quarter", "4th quarter")
+        
+        # Convert time_group to a factor with the desired order
         selectedMatchData$time_group <- factor(selectedMatchData$time_group, levels = time_group_order)
-        head(selectedMatchData$teamPoints)
-        selectedMatchData$teamPoints <- selectedMatchData$teamPoints 
-        head(selectedMatchData$teamPoints)
         
         ggplot(selectedMatchData, aes(x = time_group, y = teamPoints , fill = team)) +
           geom_bar(stat = "identity", position = "dodge") +
@@ -109,7 +122,6 @@ emmaServer <- function(input, output, session) {
       })
     }
   })
-  
 }
 
 # Run the app ----
