@@ -18,9 +18,8 @@ carlaUi <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("selectedPlayer", "Choose a player", choices = unique(data$player)),
-      checkboxGroupInput("selectedQuarters", "Choose a time", choices = unique(data$quarter),selected="1st quarter"),
-      checkboxGroupInput("Shots", "Shots made", choices = unique(data$made), selected="True"),
       selectInput("selectedTeam", "Choose a team", choices = NULL),
+      selectInput("selectedMatch", "Choose a match", choices = NULL),
     ),
     mainPanel(
       plotOutput("shotTypePlot")
@@ -30,17 +29,27 @@ carlaUi <- fluidPage(
 
 # Serveur
 carlaServer <- function(input, output, session) {
- # Reactive values to store filtered data
+  # Reactive values to store filtered data
   reactive_values <- reactiveValues(selectedTeamData = NULL)
 
   # Filter team based on the selected player
   observe({
-    playerFilteredData <- data %>%
+    PlayerFilteredData <- data %>%
       filter(player == input$selectedPlayer)
 
     # Update choices for selectInput
     updateSelectInput(session, "selectedTeam",
-                      choices = unique(playerFilteredData$team))
+                      choices = unique(PlayerFilteredData$team))
+  })
+
+  # Filter match based on the selected team & player
+  observe({
+    PlayerTeamFilteredData <- data %>%
+      filter(player == input$selectedPlayer, team == input$selectedTeam)
+
+    # Update choices for selectInput
+    updateSelectInput(session, "selectedMatch",
+                      choices = unique(PlayerTeamFilteredData$match_id))
   })
 
   # Observer to store filtered data in reactiveValues
@@ -48,9 +57,8 @@ carlaServer <- function(input, output, session) {
     reactive_values$selectedTeamData <- data %>%
       filter(
         player == input$selectedPlayer,
-        quarter %in% input$selectedQuarters,
-        made %in% input$Shots,
-        team %in% input$selectedTeam
+        team == input$selectedTeam,
+        match_id == input$selectedMatch
       )
   })
 
@@ -60,10 +68,10 @@ carlaServer <- function(input, output, session) {
   })
 
   output$shotTypePlot <- renderPlot({
-    ggplot(filteredData(), aes(x = player, fill = shot_type)) +
-      geom_bar(position = "fill") +
+    ggplot(filteredData(), aes(x = as.factor(quarter), fill = shot_type)) +
+      geom_bar(position = "fill", stat = "count") +
       scale_y_continuous(labels = scales::percent_format()) +
-      labs(title = "Proportion of Shot Types per Player", x = "Player", y = "Proportion (%)", fill = "Type of shot") +
+      labs(title = "Proportion of Shot Types per Quarter", x = "Quarter", y = "Proportion (%)", fill = "Type of shot") +
       theme_minimal()
   })
 }
