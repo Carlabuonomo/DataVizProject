@@ -19,7 +19,7 @@ ui <- navbarPage("NBA Visualizer",
 
 server <- function(input, output, session) {
   marwinServer(input, output)
-  carlaServer(input, output)
+  carlaServer(input, output, session)
   emmaServer(input, output, session)
 }
 

@@ -5,6 +5,6 @@ account: marwinkadner
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10878475
-bundleId: 8117667
+bundleId: 8119351
 url: https://marwinkadner.shinyapps.io/datavizproject/
 version: 1
